@@ -13,7 +13,7 @@
 
 module MDU(
 input[31:0] rs1,
-input[31:0] src2,
+input[31:0] rs2,
 input[2:0] function3,
 output reg[31:0] mdu_result
 );
