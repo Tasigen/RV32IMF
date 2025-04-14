@@ -11,11 +11,13 @@ module decode (
     output [31:0] read_data2,
     output [31:0] imm_out,
     output [3:0] alu_control,
-    output branch, mem_read, mem_to_reg, mem_write, alu_src, reg_write_o,
+    output mul_en, branch, mem_read, mem_to_reg, mem_write, alu_src, reg_write_o,
     output [1:0] jump
 );
     wire [1:0] alu_op_wire;
     wire mul_en_sel;
+
+    assign mul_en = mul_en_sel;
 
     opcode_decoder opcode_decoder_inst(
         .instruction(instruction),

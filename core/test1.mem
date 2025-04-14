@@ -15,3 +15,4 @@
 00C32023 // sw   x12, 0(x6)      // Store x12 (197170) to address in x6 (8)
 00032683 // lw   x13, 0(x6)      // Load from address in x6 (8) to x13
 000bf897 // auipc x17, 191       // x17 = (PC + (191 << 12))
+02928b33 // mul x22, x5, x9

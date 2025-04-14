@@ -34,7 +34,7 @@ module pipeline_rv32i(
     //Decode stage
     wire [31:0] read_data1_D, read_data2_D, imm_out_D;
     wire [3:0] alu_control_D;
-    wire branch_D, mem_read_D, mem_to_reg_D, mem_write_D, alu_src_D, reg_write_o;
+    wire mul_en_D, branch_D, mem_read_D, mem_to_reg_D, mem_write_D, alu_src_D, reg_write_o;
     wire [1:0] jump_D;
 
     //Execute stage
@@ -59,6 +59,7 @@ module pipeline_rv32i(
     reg reg_write_D;
     
     //Execute stage
+    reg mul_en_E;
     reg [31:0] instruction_E, pc_E, rs1_E, rs2_E, imm_out_E;
     reg [3:0] alu_control_E;
     reg alu_src_E, mem_read_E, mem_to_reg_E, mem_write_E, branch_E, reg_write_E;
@@ -104,6 +105,7 @@ module pipeline_rv32i(
         .read_data2(read_data2_D),
         .imm_out(imm_out_D),
         .alu_control(alu_control_D),
+        .mul_en(mul_en_D),
         .branch(branch_D),
         .mem_read(mem_read_D),
         .mem_to_reg(mem_to_reg_D),
@@ -115,6 +117,7 @@ module pipeline_rv32i(
 
     //Execute Stage Instantiation
     execute execute_inst (
+        .mul_en(mul_en_E),
         .rs1(rs1_E),
         .rs2(rs2_E),
         .alu_src(alu_src_E),
@@ -124,7 +127,7 @@ module pipeline_rv32i(
         .pc(pc_E),
         .funct3(instruction_E[14:12]),
         .branch(branch_E),
-        .alu_result(alu_result_E),
+        .result(alu_result_E),
         .branch_sel(branch_sel_E),
         .branch_target(branch_target_E),
         .jump_target(jump_target_E)
@@ -195,6 +198,7 @@ module pipeline_rv32i(
             pc_D <= pc_F;
             
             //Decode to Execute
+            mul_en_E = mul_en_D;
             rs1_E <= read_data1_D;
             rs2_E <= read_data2_D;
             imm_out_E <= imm_out_D;

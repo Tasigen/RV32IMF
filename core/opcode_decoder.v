@@ -17,7 +17,7 @@ module opcode_decoder(
         opcode = instruction[6:0];
         function7 = instruction[31:25];
         case(opcode)
-            7'b0110011: controls = (function7 == 7'b0000001)? 11'b1_0_0_0_0_0_1_00_xx:11'b0_0_0_0_0_0_1_00_10; // R-type
+            7'b0110011: controls = (function7 == 7'b0000001)? 11'b1_0_0_0_0_0_1_00_00:11'b0_0_0_0_0_0_1_00_10; // R-type
             7'b0010011: controls = 11'b0_0_0_0_0_1_1_00_10; // I-type ALU
             7'b0000011: controls = 11'b0_0_1_1_0_1_1_00_00; // I-type Load
             7'b0100011: controls = 11'b0_0_0_0_1_1_0_00_00; // S-type
