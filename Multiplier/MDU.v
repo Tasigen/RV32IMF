@@ -14,12 +14,12 @@
 module MDU(
 input[31:0] rs1,
 input[31:0] src2,
-input[2:0] mdu_control,
+input[2:0] function3,
 output reg[31:0] mdu_result
 );
 
 always @(*) begin
-	case(mdu_control)
+	case(function3)
 	`MD_MUL  : mdu_result = $signed(rs1) * $signed(src2);
 	`MD_MULH : mdu_result = $signed(rs1) * $signed(src2) >> 32;
 	`MD_MULHSU: mdu_result = $signed(rs1) * src2 >> 32;
