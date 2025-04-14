@@ -18,6 +18,8 @@
 `include "register.v"
 `include "writeback.v"
 
+`include "../Multiplier/MDU.v"
+
 module pipeline_rv32i(
     input clk,
     input rst
