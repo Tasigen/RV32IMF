@@ -20,15 +20,15 @@ output reg[31:0] mdu_result
 
 always @(*) begin
 	case(function3)
-	`MD_MUL  : mdu_result = $signed(rs1) * $signed(src2);
-	`MD_MULH : mdu_result = $signed(rs1) * $signed(src2) >> 32;
-	`MD_MULHSU: mdu_result = $signed(rs1) * src2 >> 32;
-	`MD_MULHU : mdu_result = rs1 * src2 >> 32;
+	`MD_MUL  : mdu_result = $signed(rs1) * $signed(rs2);
+	`MD_MULH : mdu_result = $signed(rs1) * $signed(rs2) >> 32;
+	`MD_MULHSU: mdu_result = $signed(rs1) * rs2 >> 32;
+	`MD_MULHU : mdu_result = rs1 * rs2 >> 32;
 	
-	`MD_DIV  : mdu_result = $signed(rs1) / $signed(src2);
-	`MD_DIVU : mdu_result = rs1 / src2;
-	`MD_REM  : mdu_result = $signed(rs1) % $signed(src2);
-	`MD_REMU : mdu_result = rs1 % src2;
+	`MD_DIV  : mdu_result = $signed(rs1) / $signed(rs2);
+	`MD_DIVU : mdu_result = rs1 / rs2;
+	`MD_REM  : mdu_result = $signed(rs1) % $signed(rs2);
+	`MD_REMU : mdu_result = rs1 % rs2;
 	default: mdu_result = 32'b0;
 	endcase
 end

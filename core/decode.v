@@ -15,9 +15,11 @@ module decode (
     output [1:0] jump
 );
     wire [1:0] alu_op_wire;
+    wire mul_en_sel;
 
     opcode_decoder opcode_decoder_inst(
-        .opcode(instruction[6:0]),
+        .instruction(instruction),
+        .mul_en(mul_en_sel),
         .branch(branch),
         .mem_read(mem_read),
         .mem_to_reg(mem_to_reg),
@@ -29,6 +31,7 @@ module decode (
     );
 
     alu_decoder alu_decoder_inst (
+        .alu_en(mul_en_sel),
         .alu_op(alu_op_wire),
         .funct3(instruction[14:12]),
         .funct7(instruction[31:25]),
