@@ -19,6 +19,7 @@
 `include "../writeback.v"
 
 `include "../MDU.v"
+`include "../registerFPU.v"
 
 `include "../pipeline_rv32i.v"
 

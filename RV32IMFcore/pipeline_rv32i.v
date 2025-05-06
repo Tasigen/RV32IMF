@@ -16,6 +16,8 @@ module pipeline_rv32i(
     wire [3:0] alu_control_D;
     wire mul_en_D, branch_D, mem_read_D, mem_to_reg_D, mem_write_D, alu_src_D, reg_write_o;
     wire [1:0] jump_D;
+    wire reg_sel_D;
+
 
     //Execute stage
     wire [31:0] alu_result_E, branch_target_E, jump_target_E;
@@ -27,7 +29,6 @@ module pipeline_rv32i(
     //Writeback stage
     wire [31:0] write_data_W;
 
-
     //pipeline registers
     
     //Fetch stage
@@ -37,12 +38,13 @@ module pipeline_rv32i(
     //Decode stage
     reg [31:0] instruction_D, pc_D, write_data_D;
     reg reg_write_D;
+    reg FPR_GPR_sel;
     
     //Execute stage
     reg mul_en_E;
     reg [31:0] instruction_E, pc_E, rs1_E, rs2_E, imm_out_E;
     reg [3:0] alu_control_E;
-    reg alu_src_E, mem_read_E, mem_to_reg_E, mem_write_E, branch_E, reg_write_E;
+    reg reg_sel_E, alu_src_E, mem_read_E, mem_to_reg_E, mem_write_E, branch_E, reg_write_E;
     reg [1:0] jump_E;
 
     //Memory stage
@@ -52,6 +54,8 @@ module pipeline_rv32i(
     //Writeback stage
     reg [31:0] alu_result_W, read_data_W, instruction_W;
     reg mem_to_reg_W, reg_write_W;
+    reg reg_sel_W;
+
 
     always @(*) begin
         pc_sel_f = branch_sel_E | (jump_E == 2'b01) | (jump_E == 2'b10);
@@ -81,10 +85,12 @@ module pipeline_rv32i(
         .write_reg(instruction_W[11:7]), //rd
         .write_data(write_data_W),
         .reg_write_i(reg_write_W),
+        .FPR_GPR_sel(FPR_GPR_sel),
         .read_data1(read_data1_D),
         .read_data2(read_data2_D),
         .imm_out(imm_out_D),
         .alu_control(alu_control_D),
+        .reg_sel(reg_sel_D),
         .mul_en(mul_en_D),
         .branch(branch_D),
         .mem_read(mem_read_D),
@@ -178,6 +184,7 @@ module pipeline_rv32i(
             pc_D <= pc_F;
             
             //Decode to Execute
+            reg_sel_E <= reg_sel_D;
             mul_en_E = mul_en_D;
             rs1_E <= read_data1_D;
             rs2_E <= read_data2_D;
@@ -206,8 +213,10 @@ module pipeline_rv32i(
             read_data_W <= read_data_M;
             mem_to_reg_W <= mem_to_reg_M;
             reg_write_W <= reg_write_M;
+            reg_sel_W <= reg_sel_E;
 
             //other
+            FPR_GPR_sel = reg_sel_W;
             write_data_D <= write_data_W;
             reg_write_D <= reg_write_W;
             //stalling logic
