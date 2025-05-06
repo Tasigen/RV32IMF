@@ -78,7 +78,7 @@ module decode (
     
     //multplexer to choose data wriiten into GPR or FPR
     always @(*) begin
-    if (fpu_sel)
+    if (FPR_GPR_sel)
         write_data_FPR = write_data;
     else
         write_data_GPR = write_data;
