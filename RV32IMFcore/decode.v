@@ -20,6 +20,8 @@ module decode (
     wire fpu_sel;
     reg [31:0] write_data_FPR;
     reg [31:0] write_data_GPR;
+    wire [31:0] read_data2_FPR;
+    wire [31:0] read_data2_GPR;
 
     assign mul_en = mul_en_sel;
     assign reg_sel = fpu_sel;
@@ -61,7 +63,7 @@ module decode (
         .write_reg(write_reg),
         .write_data(write_data_GPR),
         .read_data1(read_data1),
-        .read_data2(read_data2)
+        .read_data2(read_data2_GPR)
     ); 
 
     registerFPU registerFPU_inst(
@@ -73,14 +75,16 @@ module decode (
         .write_reg(write_reg),
         .write_data(write_data_FPR),
         .read_data1(read_data1),
-        .read_data2(read_data2)
+        .read_data2(read_data2_FPR)
     );
     
     //multplexer to choose data wriiten into GPR or FPR
-    always @(*) begin
+    always @(*)begin
     if (FPR_GPR_sel)
         write_data_FPR = write_data;
     else
         write_data_GPR = write_data;
     end
+
+    assign read_data2 = (fpu_sel)?read_data2_FPR : read_data2_GPR;
 endmodule

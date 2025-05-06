@@ -22,6 +22,7 @@ module opcode_decoder(
             7'b0000011: controls = 12'b0_0_0_1_1_0_1_1_00_00; // I-type Load
             7'b0000111: controls = 12'b1_0_0_1_1_0_1_1_00_00; // I-type FPU load
             7'b0100011: controls = 12'b0_0_0_0_0_1_1_0_00_00; // S-type
+            7'b0100111: controls = 12'b1_0_0_0_0_1_1_0_00_00; // S-type FPU
             7'b1100011: controls = 12'b0_0_1_0_0_0_0_0_00_01; // B-type
             7'b1101111: controls = 12'b0_0_0_0_0_0_0_1_10_00; // J-type (JAL)
             7'b1100111: controls = 12'b0_0_0_0_0_0_1_1_01_00; // I-type (JALR)
