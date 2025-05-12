@@ -1,5 +1,6 @@
 module execute(
     input mul_en,
+    input fpu_op,
     input [31:0] rs1,
     input [31:0] rs2,
     input alu_src,
@@ -8,6 +9,7 @@ module execute(
     input [1:0] jump,
     input [31:0] pc,
     input [2:0] funct3,
+    input [4:0] funct5,
     input branch,
     output [31:0] result,
     output branch_sel,
@@ -19,6 +21,7 @@ module execute(
     wire [31:0] alu_input2;
     assign alu_input2 = (alu_src)?imm_out:rs2;
 
+    wire [31:0] fpu_result;
     wire [31:0] alu_result;
     wire [31:0] mdu_result;
 
@@ -40,6 +43,14 @@ module execute(
        .mdu_result(mdu_result)
     );
 
+    FPU FPU_inst(
+        .rs1(rs1),
+        .rs2(rs2),
+        .fpu_control(funct5),
+        .fpu_sel(funct5[0]),
+        .fpu_result(fpu_result)
+    );
+
     branch_comp branch_comp_inst(
         .rs1(rs1),
         .rs2(rs2),
@@ -53,7 +64,14 @@ module execute(
     
     always @(*) begin
      
-       final_result = (mul_en)?mdu_result:alu_result;
+        if (mul_en)
+            final_result = mdu_result;
+        else if (fpu_op)
+            final_result = fpu_result;
+        else
+            final_result = alu_result;
+
+       //final_result = (mul_en)?mdu_result:alu_result;
     end
 
     assign result = final_result;

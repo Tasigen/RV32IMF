@@ -5,15 +5,15 @@
 `include "../../FPU/src/MulFPU.v"
 `include "../../FPU/src/AddSubFPU.v"
 
-`define FPU_ADDSUB   2'b00
-`define FPU_MUL      2'b01
-`define FPU_DIV      2'b10
-`define FPU_SQRT     2'b11
+`define FPU_ADDSUB   5'b00000, 5'b00001
+`define FPU_MUL      5'b00010
+`define FPU_DIV      5'b00011
+`define FPU_SQRT     5'b01011
 
 module FPU(
     input [31:0] rs1,
     input [31:0] rs2,
-    input [1:0] fpu_control,
+    input [4:0] fpu_control,
     input fpu_sel,
     output reg [31:0] fpu_result
     );

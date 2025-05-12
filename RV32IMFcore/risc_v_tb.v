@@ -20,12 +20,13 @@
 
 `include "../MDU.v"
 `include "../registerFPU.v"
+`include "../FPU.v"
 
 `include "../pipeline_rv32i.v"
 
 module risc_v_tb;
 
-    reg clk=0, rst;
+    reg clk=0, rst=0;
     
     always begin
         clk = ~clk;

@@ -34,14 +34,12 @@ module data_memory(
     //sequential logic
 
     always @(posedge clk) begin
-        if (rst) begin
-             for (i = 0; i < 1023; i = i + 1) begin
-                if ( i < 8)
-                    memory[i] = memory[i];
-                else
-                    memory[i] <= 8'b0;
-            end 
-        end else begin
+        if (rst) //begin
+             /*for (i = 0; i < 1023; i = i + 1) begin
+                    memory[i] = (memory[i])? memory[i] : 8'b0000_0000;*/
+                $readmemh("../variables.mem", memory);
+            //end 
+        /*end*/ else begin
                 if (mem_write) begin
                     case (funct3)
                         `MEM_SB: memory[address] <= write_data [7:0]; 

@@ -12,22 +12,27 @@ module decode (
     output [31:0] read_data2,
     output [31:0] imm_out,
     output [3:0] alu_control,
-    output reg_sel, mul_en, branch, mem_read, mem_to_reg, mem_write, alu_src, reg_write_o,
+    output fpu_op, reg_sel, mul_en, branch, mem_read, mem_to_reg, mem_write, alu_src, reg_write_o,
     output [1:0] jump
 );
     wire [1:0] alu_op_wire;
     wire mul_en_sel;
     wire fpu_sel;
+    wire fpu_op_sel;
     reg [31:0] write_data_FPR;
     reg [31:0] write_data_GPR;
+    wire [31:0] read_data1_FPR;
+    wire [31:0] read_data1_GPR;
     wire [31:0] read_data2_FPR;
     wire [31:0] read_data2_GPR;
 
     assign mul_en = mul_en_sel;
     assign reg_sel = fpu_sel;
+    assign fpu_op = fpu_op_sel;
 
     opcode_decoder opcode_decoder_inst(
         .instruction(instruction),
+        .fpu_op(fpu_op_sel),
         .fpu_en(fpu_sel),
         .mul_en(mul_en_sel),
         .branch(branch),
@@ -62,7 +67,7 @@ module decode (
         .read_reg2(instruction[24:20]),
         .write_reg(write_reg),
         .write_data(write_data_GPR),
-        .read_data1(read_data1),
+        .read_data1(read_data1_GPR),
         .read_data2(read_data2_GPR)
     ); 
 
@@ -74,7 +79,7 @@ module decode (
         .read_reg2(instruction[24:20]),
         .write_reg(write_reg),
         .write_data(write_data_FPR),
-        .read_data1(read_data1),
+        .read_data1(read_data1_FPR),
         .read_data2(read_data2_FPR)
     );
     
@@ -86,5 +91,6 @@ module decode (
         write_data_GPR = write_data;
     end
 
+    assign read_data1 = (fpu_op)? read_data1_FPR : read_data1_GPR;
     assign read_data2 = (fpu_sel)?read_data2_FPR : read_data2_GPR;
 endmodule
