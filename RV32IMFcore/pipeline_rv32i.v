@@ -60,7 +60,7 @@ module pipeline_rv32i(
 
 
     always @(*) begin
-        pc_sel_f = branch_sel_E | (jump_E == 2'b01) | (jump_E == 2'b10);
+        pc_sel_f = (rst == 1'b0)? (branch_sel_E | (jump_E == 2'b01) | (jump_E == 2'b10)) : 1'b0;
         pc_nxt_f = (jump_E == 2'b01 || jump_E == 2'b10) ? jump_target_E : branch_target_E;
     end
 
@@ -161,7 +161,7 @@ module pipeline_rv32i(
     always @(posedge clk) begin
         if (rst) begin
             //reset all pipelined registers
-            pc_sel_f <= 1'b0;
+            //pc_sel_f <= 1'b0;
             instruction_D <= 32'b0;
             pc_D <= 32'b0;
             write_data_D <= 32'b0;
