@@ -18,3 +18,16 @@ RV32IMFcore/verification/riscv.vcd
 FPU/tb/FPU.vcd
 core/riscv.vcd
 core/riscv
+FPU_pipeline/src/AddSubFPU.vcd
+FPU_pipeline/tb/DivFPU.vcd
+FPU_pipeline/tb/FPU.vcd
+FPU_pipeline/tb/registerFPU.vcd
+FPU_pipeline/tb/SqrtFPU.vcd
+FPU_pipeline/verification/MulFPU.vcd
+FPU_pipeline/verification/mulFPU
+FPU_pipeline/tb/SqrtFPU
+FPU_pipeline/tb/registerFPU
+FPU_pipeline/tb/FPU
+FPU_pipeline/tb/DivFPU
+FPU_pipeline/tb/a.out
+FPU_pipeline/src/AddSubFPU
