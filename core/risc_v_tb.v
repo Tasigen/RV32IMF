@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+`include "pipeline_rv32i.v"
 
 module risc_v_tb;
 
@@ -10,6 +11,8 @@ module risc_v_tb;
     end
 
     initial begin
+        $dumpfile("riscv.vcd");
+        $dumpvars(0,risc_v_tb);
         rst <= 1'b1;
         #200;
         rst <= 1'b0;

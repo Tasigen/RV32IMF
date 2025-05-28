@@ -16,3 +16,5 @@ RV32IMFcore/tempCodeRunnerFile.v
 RV32IMFcore/verification/riscv
 RV32IMFcore/verification/riscv.vcd
 FPU/tb/FPU.vcd
+core/riscv.vcd
+core/riscv

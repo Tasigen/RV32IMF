@@ -170,7 +170,7 @@ module pipeline_rv32i(
     always @(posedge clk) begin
         if (rst) begin
             //reset all pipelined registers
-            pc_sel_f <= 32'h00000000;
+            pc_sel_f <= 1'b0;
             instruction_D <= 32'b0;
             pc_D <= 32'b0;
             write_data_D <= 32'b0;
