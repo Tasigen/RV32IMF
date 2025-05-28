@@ -1,0 +1,4 @@
+set search_path "$search_path ./lib"
+set target_library "saed90nm_max_pg.db"
+set link_library " * $target_library"
+set symbol_library "generic.sdb"
