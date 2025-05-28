@@ -1,9 +1,5 @@
 `timescale 1ns / 1ps
 
-`include "../../FPU/src/SqrtFPU.v"
-`include "../../FPU/src/DivFPU.v"
-`include "../../FPU/src/MulFPU.v"
-`include "../../FPU/src/AddSubFPU.v"
 
 `define FPU_ADDSUB   5'b00000, 5'b00001
 `define FPU_MUL      5'b00010
