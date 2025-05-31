@@ -22,6 +22,12 @@
 `include "../registerFPU.v"
 `include "../FPU.v"
 
+`include "../AddSubFPU.v"
+`include "../MulFPU.v"
+`include "../DivFPU.v"
+`include "../SqrtFPU.v"
+
+
 `include "../pipeline_rv32i.v"
 
 module risc_v_tb;

@@ -1,99 +1,104 @@
-`define FPU_ADD 1'b0
-`define FPU_SUB 1'b1 
-
 module AddSubFPU (
-    input [31:0] N1,
-    input [31:0] N2,
-    input sel,
+    input         clk,
+    input         rst,
+    input         start,
+    input         add_sub, // 0: add, 1: subtract
+    input  [31:0] a,
+    input  [31:0] b,
+    output        ready,
     output [31:0] result
 );
 
-//parameter for comparison
-reg [31:0] N1_swap, N2_swap;
-//paramter for preporcessing
-reg [7:0] E1, E2;
-reg [7:0] d;
-//parameter for temporary resullt
-reg [23:0] S1 , S2;
-reg sign1, sign2;
-reg carry;
-reg [23:0] temp_mantissa;
-// parameter for final result
-reg [22:0] mantissa;
-reg [7:0] exponent;
-reg Sign;
+    // Pipeline valid tracking (5 stages)
+    reg [4:0] valid;
+    always @(posedge clk or posedge rst)
+        if (rst) valid <= 0;
+        else     valid <= {valid[3:0], start};
 
-integer i;
+    assign ready = valid[4];
 
-always @(*)
-begin
-
-N1_swap = N1;
-N2_swap = N2;
-
-// Is E1 =  0
-if (N1[31:23] == 0)
-    S1[23] = 1'b0;
-//is E2 = 0
-if (N2[31:23] == 0)
-    S2[23] = 1'b0;
-
-//Is E2 greater than E1? Yes(swap) : No(Dont swap) 
-if (N2[30:23] > N1[30:23]) 
-    begin
-        N1_swap = N2;
-        N2_swap = N1;
-    end
-else
-    begin
-        N1_swap = N1;
-        N2_swap = N2;
-    end        
-
-//assign to the temporary values
-S1 = {1'b1, N1_swap[22:0]};
-S2 = {1'b1, N2_swap[22:0]};
-sign1 = N1_swap[31];
-sign2 = N2_swap[31];
-E1 = N1_swap[30:23];
-E2 = N2_swap[30:23];
-
-//shifting by d
-d = E1 - E2;
-S2 = (d > 0)? (S2 >> d) : S2;
-E2 = E2 + d;
-exponent = E1;
-
-case(sel)
-    `FPU_ADD :{carry,temp_mantissa} = (sign1 ~^ sign2)? (S1 + S2) : (S1 - S2);
-    `FPU_SUB : begin
-                {carry,temp_mantissa} = (sign1 ~^ sign2)? S1 - S2 : S1 + S2;
-                if (N2[30:23] > N1[30:23]) sign1 = ~sign1;
-    end
-     //default :temp_mantissa = 23'b0;
-endcase
-
-// check for the 1.xxxx format in mantissa
-if(carry)
-    begin
-        temp_mantissa = temp_mantissa>>1;
-        exponent = (exponent < 8'hff) ? exponent + 1 : 8'hff;  // protect exponent overflow
-    end
-else if(|temp_mantissa != 1'b1)  // mantissa contains no 1 or unknown value (result should be 0)
-    begin
-        temp_mantissa = 0;
-    end
-else
-    begin
-        // 1st bit is not 1, but there is some 1 in the mantissa (protecting exponent underflow)
-        // fixed limit of iterations because Vivado saw this as an infinite loop
-        for(i = 0; temp_mantissa[23] !== 1'b1 && exponent > 0 && i < 24; i = i + 1) begin
-            temp_mantissa = temp_mantissa << 1;
-            exponent = exponent - 1;
+    // Stage 1: Unpack
+    reg [7:0]  exp_a1, exp_b1;
+    reg [23:0] mant_a1, mant_b1;
+    reg        sign_a1, sign_b1, add_sub1;
+    always @(posedge clk)
+        if (start) begin
+            exp_a1  <= a[30:23];
+            exp_b1  <= b[30:23];
+            mant_a1 <= (a[30:23] == 0) ? {1'b0, a[22:0]} : {1'b1, a[22:0]};
+            mant_b1 <= (b[30:23] == 0) ? {1'b0, b[22:0]} : {1'b1, b[22:0]};
+            sign_a1 <= a[31];
+            sign_b1 <= b[31];
+            add_sub1 <= add_sub;
         end
-    end
-end
 
-assign result = {sign1,exponent,temp_mantissa[22:0]};
+    // Stage 2: Align
+    reg [23:0] mant_a2, mant_b2;
+    reg [7:0]  exp_diff2, exp_large2;
+    reg        sign_large2, sign_small2, op2;
+    always @(posedge clk)
+        if (valid[0]) begin
+            if (exp_a1 > exp_b1) begin
+                mant_a2 <= mant_a1;
+                mant_b2 <= mant_b1 >> (exp_a1 - exp_b1);
+                exp_diff2 <= exp_a1 - exp_b1;
+                exp_large2 <= exp_a1;
+                sign_large2 <= sign_a1;
+                sign_small2 <= sign_b1;
+            end else begin
+                mant_a2 <= mant_a1 >> (exp_b1 - exp_a1);
+                mant_b2 <= mant_b1;
+                exp_diff2 <= exp_b1 - exp_a1;
+                exp_large2 <= exp_b1;
+                sign_large2 <= sign_b1;
+                sign_small2 <= sign_a1;
+            end
+            op2 <= add_sub1;
+        end
+
+    // Stage 3: Add/Subtract
+    reg [24:0] mant_res3;
+    reg [7:0]  exp_res3;
+    reg        sign_res3;
+    always @(posedge clk)
+        if (valid[1]) begin
+            if (sign_large2 == sign_small2 ^ op2) begin
+                mant_res3 <= {1'b0, mant_a2} + {1'b0, mant_b2};
+                sign_res3 <= sign_large2;
+            end else begin
+                if (mant_a2 >= mant_b2) begin
+                    mant_res3 <= {1'b0, mant_a2} - {1'b0, mant_b2};
+                    sign_res3 <= sign_large2;
+                end else begin
+                    mant_res3 <= {1'b0, mant_b2} - {1'b0, mant_a2};
+                    sign_res3 <= ~sign_large2;
+                end
+            end
+            exp_res3 <= exp_large2;
+        end
+
+    // Stage 4: Normalize
+    reg [22:0] mant_norm4;
+    reg [7:0]  exp_norm4;
+    reg        sign_norm4;
+    always @(posedge clk)
+        if (valid[2]) begin
+            if (mant_res3[24]) begin
+                mant_norm4 <= mant_res3[23:1];
+                exp_norm4 <= exp_res3 + 1;
+            end else begin
+                mant_norm4 <= mant_res3[22:0];
+                exp_norm4 <= exp_res3;
+            end
+            sign_norm4 <= sign_res3;
+        end
+
+    // Stage 5: Pack
+    reg [31:0] result_reg;
+    always @(posedge clk)
+        if (valid[3])
+            result_reg <= {sign_norm4, exp_norm4, mant_norm4};
+
+    assign result = result_reg;
 
 endmodule

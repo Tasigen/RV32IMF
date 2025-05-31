@@ -2,7 +2,8 @@
 
 module pipeline_rv32i(
     input clk,
-    input rst
+    input rst,
+    output reg [31:0] writeback_data//introduced for DC synthesis
     );
 
     wire flush;
@@ -183,6 +184,7 @@ module pipeline_rv32i(
             alu_result_W <= 32'b0;
             read_data_W <= 32'b0;
             mem_to_reg_W <= 1'b0;
+            writeback_data <= 32'b0;
         end else begin
             //Fetch to Decode
             instruction_D <= instruction_F;
@@ -224,7 +226,9 @@ module pipeline_rv32i(
             //other
             FPR_GPR_sel = reg_sel_W;
             write_data_D <= write_data_W;
-            reg_write_D <= reg_write_W;
+            reg_write_D <= write_data_W;
+
+            writeback_data<= write_data_W; //introduced for DC synthesis
             //stalling logic
             if (stall) begin
                 instruction_D <= instruction_D;

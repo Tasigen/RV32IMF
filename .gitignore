@@ -31,3 +31,5 @@ FPU_pipeline/tb/FPU
 FPU_pipeline/tb/DivFPU
 FPU_pipeline/tb/a.out
 FPU_pipeline/src/AddSubFPU
+FPU_pipeline/verification/AddSubFPU.vcd
+FPU_pipeline/verification/fpu_addsub_pipeline.vcd
