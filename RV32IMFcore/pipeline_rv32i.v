@@ -3,7 +3,8 @@
 module pipeline_rv32i(
     input clk,
     input rst,
-    output reg [31:0] writeback_data//introduced for DC synthesis
+    output reg [31:0] writeback_data,//introduced for DC synthesis
+    output reg [31:0] result//introduced for DC synthesis
     );
 
     wire flush;
@@ -229,6 +230,7 @@ module pipeline_rv32i(
             reg_write_D <= write_data_W;
 
             writeback_data<= write_data_W; //introduced for DC synthesis
+            result <= alu_result_E; //introduced for DC synthesis
             //stalling logic
             if (stall) begin
                 instruction_D <= instruction_D;
