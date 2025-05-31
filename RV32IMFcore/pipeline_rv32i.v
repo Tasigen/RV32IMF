@@ -25,6 +25,8 @@ module pipeline_rv32i(
     //Execute stage
     wire [31:0] alu_result_E, branch_target_E, jump_target_E;
     wire branch_sel_E;
+    wire [31:0] alu_result_E_DC, fpu_result_E, mdu_result_E;//introduced for DC synthesis
+
 
     //Memory stage
     wire [31:0] read_data_M;
@@ -123,7 +125,10 @@ module pipeline_rv32i(
         .result(alu_result_E),
         .branch_sel(branch_sel_E),
         .branch_target(branch_target_E),
-        .jump_target(jump_target_E)
+        .jump_target(jump_target_E),
+        .result_fpu(fpu_result_E),//introduced for synthesis
+        .result_alu(alu_result_E_DC),//introduced for synthesis
+        .result_mdu(mdu_result_E)//introduced for synthesis
     );
 
     //Memory Stage Instantiation

@@ -14,7 +14,10 @@ module execute(
     output [31:0] result,
     output branch_sel,
     output [31:0] branch_target,
-    output [31:0] jump_target
+    output [31:0] jump_target,
+    output [31:0] result_fpu,//introduced for synthesis
+    output [31:0] result_alu,//introduced for synthesis
+    output [31:0] result_mdu//introduced for synthesis
 );
 
     //ALU wires
@@ -75,4 +78,7 @@ module execute(
     end
 
     assign result = final_result;
+    assign result_alu = alu_result; // Introduced for DC synthesis
+    assign result_mdu = mdu_result; // Introduced for DC synthesis
+    assign result_fpu = fpu_result; // Introduced for DC synthesis
 endmodule
