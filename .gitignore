@@ -36,3 +36,6 @@ FPU_pipeline/verification/fpu_addsub_pipeline.vcd
 FPU_fsm/Verification/AddSubFPU_FSM.vcd
 FPU_fsm/Verification/AddSubFPU_FSM
 FPU_fsm/Verification/MulFPU_FSM
+/FPU_fsm/Verification
+/FPU_fsm/Verification
+/FPU_fsm/Verification
