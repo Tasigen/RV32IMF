@@ -55,7 +55,7 @@ always @(posedge clk) begin
         IDLE: begin
             busy <= 0;
             done <= 0;
-            result <= 32'd0;
+            //result <= 32'd0;
             exponent <= 8'd0;
             mantissa <= 23'd0;
             M <= 48'd0;
@@ -78,7 +78,7 @@ always @(posedge clk) begin
         end
 
         MULTIPLY: begin
-            if (M1[22:0] == 0 || M2[22:0] == 0) begin
+            if (E1 == 0 || E2 == 0) begin
                 M <= 0;
                 E <= 0;
                 zero_flag <= 1;

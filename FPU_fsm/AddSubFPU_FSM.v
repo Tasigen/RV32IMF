@@ -1,4 +1,3 @@
-
 `define FPU_ADD 1'b0
 `define FPU_SUB 1'b1
 
@@ -64,7 +63,7 @@ always @(posedge clk) begin
         IDLE: begin
             busy <= 0;
             done <= 0;
-            result <= 32'd0;
+            //result <= 32'd0;
             exponent <= 8'd0;
             mantissa <= 23'd0;
             temp_mantissa <= 24'd0;
