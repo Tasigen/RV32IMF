@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+`include "../FPU_Top.v"
 `include "../AddSubFPU_FSM.v"
 `include "../DivFPU_Flowchart.v"
 `include "../MulFPU_FSM.v"
