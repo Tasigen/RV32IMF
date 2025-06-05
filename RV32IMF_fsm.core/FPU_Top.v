@@ -2,7 +2,7 @@ module FPU_Top (
     input clk,
     input rst,
     input start,
-    input [2:0] fpu_op,       // 000=add/sub, 001=mul, 010=div, 011=neg, 100=mv
+    input [2:0] fpu_op,       // 000/001=add/sub, 010=mul, 011=div, 100=neg, 101=mv
     input [31:0] N1,
     input [31:0] N2,
     output reg [31:0] result,
@@ -41,9 +41,9 @@ module FPU_Top (
             IDLE: begin
                 if (start) begin
                     case (fpu_op)
-                        3'b000, 3'b001, 3'b010: next_state = START_OP; // add/mul/div
-                        3'b011: next_state = NEG_OP;
-                        3'b100: next_state = MV_OP;
+                        3'b000, 3'b001, 3'b010, 3'b011: next_state = START_OP; // add/mul/div
+                        3'b100: next_state = NEG_OP;
+                        3'b101: next_state = MV_OP;
                         default: next_state = IDLE;
                     endcase
                 end
@@ -53,9 +53,9 @@ module FPU_Top (
 
             WAIT_OP: begin
                 case (op_latched)
-                    3'b000: if (done_addsub) next_state = DONE;
-                    3'b001: if (done_mul)    next_state = DONE;
-                    3'b010: if (done_div)    next_state = DONE;
+                    3'b000, 3'b001: if (done_addsub) next_state = DONE;
+                    3'b010: if (done_mul)    next_state = DONE;
+                    3'b011: if (done_div)    next_state = DONE;
                 endcase
             end
 
@@ -89,25 +89,25 @@ module FPU_Top (
                 START_OP: begin
                     busy <= 1;
                     case (fpu_op)
-                        3'b000: start_addsub <= 1;
-                        3'b001: start_mul <= 1;
-                        3'b010: start_div <= 1;
+                        3'b000, 3'b001: start_addsub <= 1;
+                        3'b010: start_mul <= 1;
+                        3'b011: start_div <= 1;
                     endcase
                 end
 
                 WAIT_OP: begin
                     case (op_latched)
-                        3'b000: if (done_addsub) begin
+                        3'b000, 3'b001: if (done_addsub) begin
                             result <= result_addsub;
                             done <= 1;
                             busy <= 0;
                         end
-                        3'b001: if (done_mul) begin
+                        3'b010: if (done_mul) begin
                             result <= result_mul;
                             done <= 1;
                             busy <= 0;
                         end
-                        3'b010: if (done_div) begin
+                        3'b011: if (done_div) begin
                             result <= result_div;
                             done <= 1;
                             busy <= 0;

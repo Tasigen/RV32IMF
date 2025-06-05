@@ -57,22 +57,22 @@ module tb_FPU_Top;
         //fpu_op[0] = 1; // change to subtraction inside addsub
 
         // Mul: 3.0 * -2.0 = -6.0
-        run_test(3'b001, 32'h40400000, 32'hC0000000); // 3.0 * -2.0
+        run_test(3'b010, 32'h40400000, 32'hC0000000); // 3.0 * -2.0
 
         // Div: 9.0 / 3.0 = 3.0
-        run_test(3'b010, 32'h41100000, 32'h40400000); // 9.0 / 3.0
+        run_test(3'b011, 32'h41100000, 32'h40400000); // 9.0 / 3.0
 
         // fneg.s: -3.0
-        run_test(3'b011, 32'h40400000, 32'h00000000); // fneg.s
+        run_test(3'b100, 32'h40400000, 32'h00000000); // fneg.s
 
         // f.mv.s: just copy N1
-        run_test(3'b100, 32'h3FC00000, 32'h00000000); // f.mv.s
+        run_test(3'b101, 32'h3FC00000, 32'h00000000); // f.mv.s
 
         // Add: 1.5 + 2.25 = 3.75
         run_test(3'b000, 32'h3FC00000, 32'h40200000); // 1.5 + 2.25
 
         // Mul: 1.5 * 2.0 = 3.0
-        run_test(3'b001, 32'h3FC00000, 32'h40000000);
+        run_test(3'b010, 32'h3FC00000, 32'h40000000);
 
         $display("All tests completed.");
         $finish;

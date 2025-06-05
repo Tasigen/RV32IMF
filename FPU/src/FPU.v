@@ -1,9 +1,6 @@
 `timescale 1ns / 1ps
 
-`include "../../FPU/src/SqrtFPU.v"
-`include "../../FPU/src/DivFPU.v"
-`include "../../FPU/src/MulFPU.v"
-`include "../../FPU/src/AddSubFPU.v"
+
 
 `define FPU_ADDSUB   2'b00
 `define FPU_MUL      2'b01
@@ -27,8 +24,8 @@ module FPU(
     //module instantiation
     AddSubFPU ASFPU_inst (.N1(rs1), .N2(rs2), .sel(fpu_sel), .result(AddSubResult));
     MulFPU MulFPUinst(.N1(rs1),.N2(rs2),.result(MulResult));
-    DivFPU DivFPUinst(.N1(rs1), .N2(rs2), .result(DivResult));
-    SqrtFPU SqrtFPUinst(.A(rs1), .result(SqrtResult));
+    DivFPU_Flowchart DivFPUinst(.N1(rs1), .N2(rs2), .result(DivResult));
+    //SqrtFPU SqrtFPUinst(.A(rs1), .result(SqrtResult));
 
     always @(*) begin
         case(fpu_control) 

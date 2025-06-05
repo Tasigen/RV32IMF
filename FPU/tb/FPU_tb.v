@@ -1,5 +1,8 @@
 `include "../src/FPU.v"
 
+`include "../../FPU/src/DivFPU_Flowchart.v"
+`include "../../FPU/src/MulFPU.v"
+`include "../../FPU/src/AddSubFPU.v"
 module FPU_tb;
 reg [31:0] A,B;
 reg fpu_sel;
@@ -185,22 +188,22 @@ $display("Expected Value : %f Result : %f",2.82*(-0.94),value);
 #20
 $display("===== Division =====");
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
-$display("Expected Value : %f Result : %f",4.2/3.2,value);
+$display("Expected Value : %f Result : %f Hex Values : %h",4.2/3.2,value, result);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
-$display("Expected Value : %f Result : %f",0.66/0.51,value);
+$display("Expected Value : %f Result : %f Hex Values : %h",0.66/0.51,value, result);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
-$display("Expected Value : %f Result : %f",(-6.4)/(-0.5),value);
+$display("Expected Value : %f Result : %f Hex Values : %h",(-6.4)/(-0.5),value, result);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
-$display("Expected Value : %f Result : %f",6.4/(-0.5),value);
+$display("Expected Value : %f Result : %f Hex Values : %h",6.4/(-0.5),value, result);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
-$display("Expected Value : %f Result : %f",2.82/(-0.94),value);
+$display("Expected Value : %f Result : %f Hex Values : %h",2.82/(-0.94),value, result);
 
 
-#20
+/*#20
 $display("===== Square root =====");
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
 $display("Expected Value : %f Result : %f",5.0,value);
@@ -212,7 +215,7 @@ value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(resul
 $display("Expected Value : %f Result : %f",9.219544457292887,value);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
-$display("Expected Value : %f Result : %f",9.591663046625438,value);
+$display("Expected Value : %f Result : %f",9.591663046625438,value);*/
 $finish;
 end
 
