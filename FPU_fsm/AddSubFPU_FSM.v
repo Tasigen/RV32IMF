@@ -61,20 +61,20 @@ end
 always @(posedge clk) begin
     case (state)
         IDLE: begin
-            busy <= 0;
-            done <= 0;
+            busy = 0;
+            done = 0;
             //result <= 32'd0;
-            exponent <= 8'd0;
-            mantissa <= 23'd0;
-            temp_mantissa <= 24'd0;
+            exponent = 8'd0;
+            mantissa = 23'd0;
+            temp_mantissa = 24'd0;
         end
 
         UNPACK: begin
-            busy <= 1;
-            done <= 0;
-            N1_swap <= N1;
-            N2_swap <= N2;
-            sel_reg <= sel;
+            busy = 1;
+            done = 0;
+            N1_swap = N1;
+            N2_swap = N2;
+            sel_reg = sel;
 
             // Is E1 =  0
             if (N1[31:23] == 0)
@@ -96,12 +96,12 @@ always @(posedge clk) begin
                 end     
 
             // Unpack fields
-            E1 <= N1_swap[30:23];
-            E2 <= N2_swap[30:23];
-            S1 <= {1'b1, N1_swap[22:0]};
-            S2 <= {1'b1, N2_swap[22:0]};
-            sign1 <= N1_swap[31];
-            sign2 <= N2_swap[31];
+            E1 = N1_swap[30:23];
+            E2 = N2_swap[30:23];
+            S1 = {1'b1, N1_swap[22:0]};
+            S2 = {1'b1, N2_swap[22:0]};
+            sign1 = N1_swap[31];
+            sign2 = N2_swap[31];
         end
 
         ALIGN: begin
@@ -129,14 +129,14 @@ always @(posedge clk) begin
                 begin
                     temp_mantissa = temp_mantissa>>1;
                     exponent = (exponent < 8'hff) ? exponent + 1 : 8'hff;  // protect exponent overflow
-                    mantissa <= temp_mantissa[22:0];
-                    Sign <= sign1; 
+                    mantissa = temp_mantissa[22:0];
+                    Sign = sign1; 
                 end
             else if(|temp_mantissa == 24'b0)  // mantissa contains no 1 or unknown value (result should be 0)
                 begin
-                    temp_mantissa <= 0;
-                    exponent <= 0;
-                    Sign <= 0;
+                    temp_mantissa = 0;
+                    exponent = 0;
+                    Sign = 0;
                 end
             else
                 begin
@@ -147,19 +147,19 @@ always @(posedge clk) begin
                         exponent = exponent - 1;
                     end
 
-                    mantissa <= temp_mantissa[22:0];
-                    Sign <= sign1; 
+                    mantissa = temp_mantissa[22:0];
+                    Sign = sign1; 
                 end         
         end
 
         PACK: begin
 
-            result <= {Sign, exponent, mantissa};
+            result = {Sign, exponent, mantissa};
         end
 
         DONE: begin
-            busy <= 0;
-            done <= 1;
+            busy = 0;
+            done = 1;
         end
     endcase
 end
