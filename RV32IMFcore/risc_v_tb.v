@@ -24,8 +24,8 @@
 
 `include "../AddSubFPU.v"
 `include "../MulFPU.v"
-`include "../DivFPU.v"
-`include "../SqrtFPU.v"
+`include "../DivFPU_Flowchart.v"
+//`include "../SqrtFPU.v"
 
 
 `include "../pipeline_rv32i.v"

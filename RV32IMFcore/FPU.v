@@ -23,8 +23,8 @@ module FPU(
     //module instantiation
     AddSubFPU ASFPU_inst (.N1(rs1), .N2(rs2), .sel(fpu_sel), .result(AddSubResult));
     MulFPU MulFPUinst(.N1(rs1),.N2(rs2),.result(MulResult));
-    DivFPU DivFPUinst(.N1(rs1), .N2(rs2), .result(DivResult));
-    SqrtFPU SqrtFPUinst(.A(rs1), .result(SqrtResult));
+    DivFPU_Flowchart DivFPUinst(.N1(rs1), .N2(rs2), .result(DivResult));
+    //SqrtFPU SqrtFPUinst(.A(rs1), .result(SqrtResult));
 
     always @(*) begin
         case(fpu_control) 
