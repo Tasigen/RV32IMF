@@ -37,7 +37,7 @@ reg [31:0] N1_swap, N2_swap;
 reg sel_reg;
 
 // FSM control
-always @(posedge clk or rst) begin
+always @(posedge clk) begin
     if (rst)
         state <= IDLE;
     else
