@@ -3,8 +3,10 @@
 module pipeline_rv32i(
     input clk,
     input rst,
-    output reg [31:0] writeback_data,//introduced for DC synthesis
-    output reg [31:0] result//introduced for DC synthesis
+    //introduced for DC synthesis
+    output reg [31:0] writeback_data,
+    output reg [31:0] result,
+    output reg [31:0] f_result, a_result, m_result
     );
 
     wire flush;
@@ -233,6 +235,10 @@ module pipeline_rv32i(
             FPR_GPR_sel = reg_sel_W;
             write_data_D <= write_data_W;
             reg_write_D <= write_data_W;
+            f_result <= fpu_result_E;
+            a_result <=  alu_result_E_DC;
+            m_result <= mdu_result_E;
+
 
             writeback_data<= write_data_W; //introduced for DC synthesis
             result <= alu_result_E; //introduced for DC synthesis
