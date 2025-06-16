@@ -12,18 +12,28 @@
 
 
 module MDU(
-input[31:0] rs1, // first operand of the MDU.
-input[31:0] rs2, // second operand of the MDU.
+input signed[31:0] rs1, // first operand of the MDU.
+input signed[31:0] rs2, // second operand of the MDU.
 input[2:0] function3, // function3 from the instruction used to select between different MDU operations.
 output reg[31:0] mdu_result // MDU output for result.
 );
 
+reg signed [63:0] temp_mul;
 always @(*) begin
 	case(function3)
 	`MD_MUL  : mdu_result = $signed(rs1) * $signed(rs2);// MUL dest_reg, rs1, rs2
-	`MD_MULH : mdu_result = $signed(rs1) * $signed(rs2) >> 32;// MULH dest_reg, rs1, rs2
-	`MD_MULHSU: mdu_result = $signed(rs1) * rs2 >> 32;// MULHSU dest_reg, rs1, rs2
-	`MD_MULHU : mdu_result = rs1 * rs2 >> 32;// MULHU dest_reg, rs1, rs2
+	`MD_MULH : begin 
+		temp_mul = $signed(rs1) * $signed(rs2);
+		mdu_result = temp_mul[63:32];
+	end                                               // MULH dest_reg, rs1, rs2
+	`MD_MULHSU: begin
+		temp_mul = $signed(rs1) * rs2;
+		mdu_result =temp_mul[63:32];
+		end 										// MULHSU dest_reg, rs1, rs2
+	`MD_MULHU : begin
+		temp_mul = rs1 * rs2;
+		mdu_result = temp_mul[63:32];
+		end											// MULHU dest_reg, rs1, rs2
 	
 	`MD_DIV  : mdu_result = $signed(rs1) / $signed(rs2);// DIV dest_reg, rs1, rs2
 	`MD_DIVU : mdu_result = rs1 / rs2; // DIVU dest_reg, rs1, rs2
