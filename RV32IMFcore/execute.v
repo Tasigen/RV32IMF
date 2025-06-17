@@ -49,7 +49,8 @@ module execute(
     FPU FPU_inst(
         .rs1(rs1),
         .rs2(rs2),
-        .fpu_control(funct5),
+        .fpu_control(funct5[2:0]),
+        .funct3(funct3),
         .fpu_sel(funct5[0]),
         .fpu_result(fpu_result)
     );
