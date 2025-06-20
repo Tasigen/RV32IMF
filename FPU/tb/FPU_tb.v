@@ -157,7 +157,7 @@ value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(resul
 $display("Expected Value : %f Result : %f",3.2-4.2,value);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
-$display("Expected Value : %f Result : %f",0.1-0.1,value);
+$display("Expected Value : %f Result : %f",0.66-0.51,value);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
 $display("Expected Value : %f Result : %f",-0.5-(-6.4),value);
@@ -175,7 +175,7 @@ value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(resul
 $display("Expected Value : %f Result : %f",3.2*4.2,value);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
-$display("Expected Value : %f Result : %f",0.1*0.1,value);
+$display("Expected Value : %f Result : %f",0.66*0.51,value);
 #20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
 $display("Expected Value : %f Result : %f",-0.5*(-6.4),value);
@@ -187,8 +187,8 @@ value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(resul
 $display("Expected Value : %f Result : %f",2.82*(-0.94),value);
 
 
-#20
 $display("===== Division =====");
+#20
 value =(2**(result[30:23]-127))*($itor({1'b1,result[22:0]})/2**23)*((-1)**(result[31]));
 $display("Expected Value : %f Result : %f Hex Values : %h",4.2/3.2,value, result);
 #20

@@ -28,7 +28,7 @@ module data_memory(
 
     // initialize data variables
     initial begin
-        $readmemh("../variables.mem", memory); // Load instructions from hex file
+        $readmemh("../fft_data.mem", memory); // Load instructions from hex file
     end
 
     //sequential logic

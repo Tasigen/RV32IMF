@@ -1,0 +1,38 @@
+00000297  //auipc t0, 0x0 la t0, input
+00000317  //auipc t1, 0x0 la t1, output
+0002A007  //flw f0, 0(t0)
+0042A087  //flw f1, 4(t0)
+0082A107  //flw f2, 8(t0)
+00C2A187  //flw f3, 12(t0)
+0102A207  //flw f4, 16(t0)
+0142A287  //flw f5, 20(t0)
+0182A307  //flw f6, 24(t0)
+01C2A387  // flw f7, 28(t0)
+00407453  // fadd.s f8, f0, f4
+0050f4d3  // fadd.s f9, f1, f5
+08407553  // fsub.s f10, f0, f4
+0850f5d3  // fsub.s f11, f1, f5
+00617653  // fadd.s f12, f2, f6
+0071f6d3  // fadd.s f13, f3, f7
+08617753  // fsub.s f14, f2, f6
+0871f7d3  // fsub.s f15, f3, f7
+00c47853  // fadd.s f16, f8, f12
+00d4f8d3  // fadd.s f17, f9, f13
+08c47953  // fsub.s f18, f8, f12
+08d4f9d3  // fsub.s f19, f9, f13
+20f78a53  // fsgnj.s f20, f15, f15
+20e72ad3  // fsgnjx.s f21, f14, f14
+01457b53  // fadd.s f22, f10, f20
+0155fbd3  // fadd.s f23, f11, f21
+09457c53  // fsub.s f24, f10, f20
+0955fcd3  // fsub.s f25, f11, f21
+01032027  // fsw f16, 0(t1)
+01132227  // fsw f17, 4(t1)
+01632427  // fsw f22, 8(t1)
+01732627  // fsw f23, 12(t1)
+01232827  // fsw f18, 16(t1)
+01332a27  // fsw f19, 20(t1)
+01832c27  // fsw f24, 24(t1)
+01932e27  // fsw f25, 28(t1)
+//00A00513  // li a0, 10  -> addi a0, zero, 10
+//00000073  // ecall
