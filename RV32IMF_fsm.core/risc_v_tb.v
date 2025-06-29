@@ -20,13 +20,11 @@
 
 `include "../MDU.v"
 `include "../registerFPU.v"
-`include "../FPU.v"
+`include "../FPU_Top.v"
 
-`include "../AddSubFPU.v"
-`include "../MulFPU.v"
-`include "../DivFPU.v"
-`include "../SqrtFPU.v"
-
+`include "../AddSubFPU_FSM.v"
+`include "../MulFPU_FSM.v"
+`include "../DivFPU_Flowchart.v"
 
 `include "../pipeline_rv32i.v"
 

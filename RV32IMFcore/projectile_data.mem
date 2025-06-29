@@ -1,0 +1,16 @@
+00
+00
+40
+40 // initial velocity (v0)
+00
+00
+00
+40 // time (t)
+cd
+cc
+1c
+41 // acceleration cosntant (a)
+00
+00
+00
+3f // 0.5 coefficient

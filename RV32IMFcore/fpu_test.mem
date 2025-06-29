@@ -1,0 +1,27 @@
+00002083 // lw t1, 0(zero)         // Load a = 0x40400000
+00402103 // lw t2, 4(zero)         // Load b = 0x3f800000
+
+00100293 // addi t0, zero, 1       // t0 = 1
+0052b2b3 // sll t5, t1, t0         // t5 = a << 1
+0182d2b3 // srl t5, t5, 24         // t5 = exp_a
+
+0052b333 // sll t6, t2, t0         // t6 = b << 1
+01835333 // srl t6, t6, 24         // t6 = exp_b
+
+00c2c2b3 // xor t0, t5, t6         // If exponents not equal, skip
+00028263 // beq t0, zero, 8        // Skip shift if exp equal
+
+007f8533 // and t0, t1, t6         // mant_a = a & mask (bug fix)
+007f8633 // and t6, t2, t6         // mant_b = b & mask
+
+00b50533 // add t0, t0, t6         // add mantissas
+
+01c29293 // slli t5, t0, 0x1c      // normalize
+01c2d2b3 // srl  t5, t5, 0x1c
+
+01729293 // slli t3, t5, 23        // pack exponent
+00e2e2b3 // or   t0, t3, t0        // final result
+
+00802023 // sw t0, 8(zero)         // store result
+00a00513 // addi a0, zero, 10      // exit syscall
+00000073 // ecall

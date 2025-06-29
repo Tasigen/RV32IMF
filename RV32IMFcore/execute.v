@@ -73,11 +73,10 @@ module execute(
         else if (fpu_op)
             final_result = fpu_result;
         else
-            final_result = alu_result;
-
-       //final_result = (mul_en)?mdu_result:alu_result;
+            final_result = alu_result; 
     end
-
+        
+    //final_result = (mul_en)?mdu_result:alu_result;
     assign result = final_result;
     assign result_alu = alu_result; // Introduced for DC synthesis
     assign result_mdu = mdu_result; // Introduced for DC synthesis

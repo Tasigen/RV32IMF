@@ -1,7 +1,5 @@
 `timescale 1ns / 1ps
 
-
-
 `define FPU_ADDSUB   3'b000, 3'b001
 `define FPU_MUL      3'b010
 `define FPU_DIV      3'b011

@@ -1,0 +1,11 @@
+00002087  //flw f1, 0(x0)     -> f1 = v0
+00402107  //flw f2, 4(x0)     -> f2 = t
+00802187 //flw f3, 8(x0)       ->f3 = a
+00c02207 //flw f4, 12(x0)      ->f4 = 0.5
+
+1020f2d3 //fmul.s f5, f1, f2     //f5 = v0 * t -> Compute v0 * t
+10217353 //fmul.s f6, f2, f2    //f6 = t^2 -> -> Compute t * t
+1061f3d3 //fmul.s f7, f3, f6    //f7 = a * t^2 -> Compute a * t^2
+10727453 //fmul.s f8, f4, f7    //f8 = 0.5 * a * t^2 -> Compute 0.5 * a * t^2
+
+0082f4d3//fadd.s f9, f5, f8     //f9 = x -> Final result: x = v0 * t + 0.5 * a * t^2

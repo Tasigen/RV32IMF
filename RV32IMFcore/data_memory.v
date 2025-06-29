@@ -28,7 +28,7 @@ module data_memory(
 
     // initialize data variables
     initial begin
-        $readmemh("../fft_data.mem", memory); // Load instructions from hex file
+        $readmemh("../projectile_data.mem", memory); // Load instructions from hex file
     end
 
     //sequential logic
@@ -37,7 +37,7 @@ module data_memory(
         if (rst) //begin
              /*for (i = 0; i < 1023; i = i + 1) begin
                     memory[i] = (memory[i])? memory[i] : 8'b0000_0000;*/
-                $readmemh("../variables.mem", memory);
+                $readmemh("../projectile_data.mem", memory);
             //end 
         /*end*/ else begin
                 if (mem_write) begin
