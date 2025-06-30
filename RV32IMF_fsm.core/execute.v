@@ -46,9 +46,9 @@ module execute(
        .mdu_result(mdu_result)
     );
 
-    FPU FPU_inst(
-        .rs1(rs1),
-        .rs2(rs2),
+    FPU_Top FPU_inst(
+        .N1(rs1),
+        .N2(rs2),
         .fpu_control(funct5),
         .fpu_sel(funct5[0]),
         .fpu_result(fpu_result)
