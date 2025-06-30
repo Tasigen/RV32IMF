@@ -26,6 +26,7 @@ module decode (
     wire [31:0] read_data2_FPR;
     wire [31:0] read_data2_GPR;
     reg GPR_write_i, FPR_write_i;
+    reg [4:0] GPR_write_reg, FPR_write_reg;
 
     assign mul_en = mul_en_sel;
     assign reg_sel = fpu_sel;
@@ -66,7 +67,7 @@ module decode (
         .reg_write(GPR_write_i),
         .read_reg1(instruction[19:15]),
         .read_reg2(instruction[24:20]),
-        .write_reg(write_reg),
+        .write_reg(GPR_write_reg),
         .write_data(write_data_GPR),
         .read_data1(read_data1_GPR),
         .read_data2(read_data2_GPR)
@@ -78,7 +79,7 @@ module decode (
         .reg_write(FPR_write_i),
         .read_reg1(instruction[19:15]),
         .read_reg2(instruction[24:20]),
-        .write_reg(write_reg),
+        .write_reg(FPR_write_reg),
         .write_data(write_data_FPR),
         .read_data1(read_data1_FPR),
         .read_data2(read_data2_FPR)
@@ -88,11 +89,13 @@ module decode (
     always @(*)begin
     if (FPR_GPR_sel) begin
         GPR_write_i = 0;
+        FPR_write_reg = write_reg;
         FPR_write_i = reg_write_i;
         write_data_FPR = write_data;
     end
     else begin
         FPR_write_i = 0;
+        GPR_write_reg = write_reg;
         GPR_write_i = reg_write_i;
         write_data_GPR = write_data;
     end
